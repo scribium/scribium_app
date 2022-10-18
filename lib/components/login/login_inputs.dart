@@ -19,12 +19,20 @@ class _LoginInputsState extends State<LoginInputs> {
       width: widget.size.width,
       child: Column(
         children: [
-          Text(
-            "Login",
-            textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  fontSize: 40,
-                ),
+          SizedBox(
+            height:
+                (widget.mQD.size.height - widget.mQD.padding.vertical) * 0.05,
+            width:
+                (widget.mQD.size.width - widget.mQD.padding.horizontal) * 0.8,
+            child: FittedBox(
+              child: Text(
+                "Login",
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      fontSize: 40,
+                    ),
+              ),
+            ),
           ),
           SizedBox(
             height:
@@ -33,6 +41,8 @@ class _LoginInputsState extends State<LoginInputs> {
           SizedBox(
             width:
                 (widget.mQD.size.width - widget.mQD.padding.horizontal) * 0.7,
+            height:
+                (widget.mQD.size.height - widget.mQD.padding.vertical) * 0.075,
             child: const TextField(
               textAlign: TextAlign.start,
               textInputAction: TextInputAction.done,
@@ -47,6 +57,8 @@ class _LoginInputsState extends State<LoginInputs> {
           SizedBox(
             width:
                 (widget.mQD.size.width - widget.mQD.padding.horizontal) * 0.7,
+            height:
+                (widget.mQD.size.height - widget.mQD.padding.vertical) * 0.075,
             child: TextField(
               textAlign: TextAlign.start,
               textInputAction: TextInputAction.done,

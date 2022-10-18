@@ -1,9 +1,4 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:scribium_app/components/login/login_inputs.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -62,6 +57,19 @@ class LoginScreen extends StatelessWidget {
                   onPressed: () {},
                   child: const Text(
                     "Login",
+                  ),
+                ),
+              ),
+
+              SizedBox(
+                height: (_mQD.size.height - _mQD.padding.vertical) * 0.05,
+                width: (_mQD.size.width - _mQD.padding.horizontal) * 0.68,
+                child: FittedBox(
+                  child: Text(
+                    "Don't have an acoount? Create one here.",
+                    style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                          decoration: TextDecoration.underline,
+                        ),
                   ),
                 ),
               ),

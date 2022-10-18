@@ -44,6 +44,11 @@ class MyApp extends StatelessWidget {
             color: Color.fromRGBO(53, 24, 90, 1),
             fontFamily: "Yeseva",
           ),
+          titleMedium: TextStyle(
+            color: Color.fromRGBO(53, 24, 90, 1),
+            fontFamily: "Archivo",
+            fontWeight: FontWeight.w400,
+          ),
           titleSmall: TextStyle(
             color: Colors.grey,
             fontFamily: "Archivo",
