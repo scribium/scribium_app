@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:scribium_app/constants.dart';
+import 'package:scribium_app/providers/auth.dart';
 import 'package:scribium_app/screens/intro_screen.dart';
 import 'package:scribium_app/screens/login_screen.dart';
-import 'package:scribium_app/screens/register_screen.dart';
+
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -33,76 +35,90 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     //TODO: Add multiprovider, with one changenotifier storing theme settings.
 
-    return MaterialApp(
-      title: "Scribium App",
-      // Themes set
-      theme: ThemeData(
-        backgroundColor: Colors.white,
-        primaryColor: const Color.fromRGBO(53, 24, 90, 1),
-        textTheme: const TextTheme(
-          titleLarge: TextStyle(
-            color: Color.fromRGBO(53, 24, 90, 1),
-            fontFamily: "Yeseva",
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (context) => Auth(),
+        ),
+      ],
+      child: MaterialApp(
+        title: "Scribium App",
+        // Themes set
+        theme: ThemeData(
+          backgroundColor: Colors.white,
+          primaryColor: ScribiumColors.darkPurple,
+          textTheme: const TextTheme(
+            titleLarge: TextStyle(
+              color: ScribiumColors.darkPurple,
+              fontFamily: "Yeseva",
+            ),
+            titleMedium: TextStyle(
+              color: ScribiumColors.darkPurple,
+              fontFamily: "Archivo",
+              fontWeight: FontWeight.w400,
+            ),
+            titleSmall: TextStyle(
+              color: Colors.grey,
+              fontFamily: "Archivo",
+              fontWeight: FontWeight.w200,
+            ),
           ),
-          titleMedium: TextStyle(
-            color: Color.fromRGBO(53, 24, 90, 1),
-            fontFamily: "Archivo",
-            fontWeight: FontWeight.w400,
+          outlinedButtonTheme: OutlinedButtonThemeData(
+            style: ButtonStyle(
+              overlayColor: MaterialStateProperty.all(
+                ScribiumColors.lightPurple,
+              ),
+              foregroundColor: MaterialStateProperty.all(
+                ScribiumColors.darkPurple,
+              ),
+              backgroundColor: MaterialStateProperty.all(Colors.transparent),
+            ),
           ),
-          titleSmall: TextStyle(
-            color: Colors.grey,
-            fontFamily: "Archivo",
-            fontWeight: FontWeight.w200,
+          iconTheme: const IconThemeData(
+            color: ScribiumColors.darkPurple,
+          ),
+          textSelectionTheme: const TextSelectionThemeData(
+            cursorColor: ScribiumColors.darkPurple,
+          ),
+          inputDecorationTheme: const InputDecorationTheme(
+            focusColor: ScribiumColors.darkPurple,
+            prefixIconColor: ScribiumColors.darkPurple,
+            enabledBorder: UnderlineInputBorder(
+              borderSide: BorderSide(
+                color: ScribiumColors.lightPurple,
+              ),
+            ),
+            suffixIconColor: ScribiumColors.darkPurple,
+            focusedBorder: UnderlineInputBorder(
+              borderSide: BorderSide(
+                color: ScribiumColors.darkPurple,
+              ),
+            ),
           ),
         ),
-        outlinedButtonTheme: OutlinedButtonThemeData(
-          style: ButtonStyle(
-            overlayColor: MaterialStateProperty.all(
-                const Color.fromRGBO(153, 138, 171, 1)),
-            foregroundColor:
-                MaterialStateProperty.all(Color.fromRGBO(53, 24, 90, 1)),
-            backgroundColor: MaterialStateProperty.all(Colors.transparent),
-          ),
+        darkTheme: ThemeData(
+          backgroundColor: Colors.grey,
         ),
-        iconTheme: const IconThemeData(color: Color.fromRGBO(53, 24, 90, 1)),
-        textSelectionTheme: const TextSelectionThemeData(
-          cursorColor: Color.fromRGBO(53, 24, 90, 1),
+        highContrastTheme: ThemeData(
+          backgroundColor: Colors.white,
         ),
-        inputDecorationTheme: const InputDecorationTheme(
-          focusColor: Color.fromRGBO(53, 24, 90, 1),
-          prefixIconColor: Color.fromRGBO(53, 24, 90, 1),
-          enabledBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color: Color.fromRGBO(153, 138, 171, 1)),
-          ),
-          suffixIconColor: Color.fromRGBO(53, 24, 90, 1),
-          focusedBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color: Color.fromRGBO(53, 24, 90, 1)),
-          ),
+        highContrastDarkTheme: ThemeData(
+          backgroundColor: Colors.black,
         ),
-      ),
-      darkTheme: ThemeData(
-        backgroundColor: Colors.grey,
-      ),
-      highContrastTheme: ThemeData(
-        backgroundColor: Colors.white,
-      ),
-      highContrastDarkTheme: ThemeData(
-        backgroundColor: Colors.black,
-      ),
 
-      debugShowCheckedModeBanner: false,
+        debugShowCheckedModeBanner: false,
 
-      // Route management
-      initialRoute: IntroScreen.routeName,
-      onUnknownRoute: (settings) => MaterialPageRoute<void>(
-        settings: settings,
-        builder: (context) => const IntroScreen(),
+        // Route management
+        initialRoute: IntroScreen.routeName,
+        onUnknownRoute: (settings) => MaterialPageRoute<void>(
+          settings: settings,
+          builder: (context) => const IntroScreen(),
+        ),
+        routes: {
+          IntroScreen.routeName: (context) => const IntroScreen(),
+          LoginScreen.routeName: (context) => const LoginScreen(),
+        },
       ),
-      routes: {
-        IntroScreen.routeName: (context) => const IntroScreen(),
-        LoginScreen.routeName: (context) => const LoginScreen(),
-        RegisterScreen.routeName: (context) => const RegisterScreen(),
-      },
     );
   }
 }
