@@ -40,40 +40,10 @@ class LoginScreen extends StatelessWidget {
                 mQD: _mQD,
                 size: Size(
                   double.infinity,
-                  (_mQD.size.height - _mQD.padding.vertical) * 0.25,
+                  (_mQD.size.height - _mQD.padding.vertical) * 0.4,
                 ),
               ), //TODO: Set height and width using property
-
-              // height: 0.05 (0.60)
-              SizedBox(
-                height: (_mQD.size.height - _mQD.padding.vertical) * 0.05,
-              ),
-
-              // height: 0.05 (0.65)
-              SizedBox(
-                height: (_mQD.size.height - _mQD.padding.vertical) * 0.05,
-                width: (_mQD.size.width - _mQD.padding.horizontal) * 0.7,
-                child: OutlinedButton(
-                  onPressed: () {},
-                  child: const Text(
-                    "Login",
-                  ),
-                ),
-              ),
-
-              SizedBox(
-                height: (_mQD.size.height - _mQD.padding.vertical) * 0.05,
-                width: (_mQD.size.width - _mQD.padding.horizontal) * 0.68,
-                child: FittedBox(
-                  child: Text(
-                    "Don't have an acoount? Create one here.",
-                    style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                          decoration: TextDecoration.underline,
-                        ),
-                  ),
-                ),
-              ),
-              Spacer(),
+              const Spacer(),
 
               // height: 0.05 (0.70)
               SizedBox(

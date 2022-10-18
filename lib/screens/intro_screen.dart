@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:scribium_app/screens/login_screen.dart';
+
+import 'login_screen.dart';
 
 class IntroScreen extends StatefulWidget {
   static const routeName = "/";
