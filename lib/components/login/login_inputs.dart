@@ -18,7 +18,6 @@ class LoginInputs extends StatefulWidget {
 }
 
 class _LoginInputsState extends State<LoginInputs> {
-  
   // Controller storing information from the mail and password inputs.
   late TextEditingController _mailInput;
   late TextEditingController _passwordInput;
@@ -75,7 +74,7 @@ class _LoginInputsState extends State<LoginInputs> {
     _mailInput.dispose();
     _passwordInput.dispose();
   }
-
+  
   @override
   Widget build(BuildContext context) {
     Auth provider = context.read<Auth>();
@@ -279,6 +278,7 @@ class _LoginInputsState extends State<LoginInputs> {
                       curve: Curves.easeInOutBack,
                       
                       //TODO: detect the device scale to fill screen
+
                       scale: _logged ? 25 : 1,
                       child: AnimatedContainer(
                         duration: const Duration(
