@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:scribium_app/constants.dart';
 import 'package:scribium_app/providers/auth.dart';
@@ -17,6 +18,7 @@ class LoginInputs extends StatefulWidget {
 }
 
 class _LoginInputsState extends State<LoginInputs> {
+  
   // Controller storing information from the mail and password inputs.
   late TextEditingController _mailInput;
   late TextEditingController _passwordInput;
@@ -67,8 +69,29 @@ class _LoginInputsState extends State<LoginInputs> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+
+    _mailInput.dispose();
+    _passwordInput.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     Auth provider = context.read<Auth>();
+
+    if (_logged) {
+      Future.delayed(const Duration(milliseconds: 1000), () {
+        SystemChrome.setSystemUIOverlayStyle(
+          ScribiumSystemUiOverlayStyle.light.copyWith(
+
+            // At the end of animation change the system navigation color, so the background matches it.
+            systemNavigationBarColor: ScribiumColors.darkPurple,
+            systemNavigationBarIconBrightness: Brightness.light,
+          ),
+        );
+      });
+    }
 
     return SizedBox(
       height: widget.size.height,
@@ -254,6 +277,8 @@ class _LoginInputsState extends State<LoginInputs> {
                         Navigator.of(context).push(_createRoute());
                       },
                       curve: Curves.easeInOutBack,
+                      
+                      //TODO: detect the device scale to fill screen
                       scale: _logged ? 25 : 1,
                       child: AnimatedContainer(
                         duration: const Duration(
