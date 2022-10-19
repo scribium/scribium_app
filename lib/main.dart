@@ -6,7 +6,6 @@ import 'package:scribium_app/providers/auth.dart';
 import 'package:scribium_app/screens/intro_screen.dart';
 import 'package:scribium_app/screens/login_screen.dart';
 
-
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -20,9 +19,7 @@ void main() {
 
   // Navigation bar settings
   SystemChrome.setSystemUIOverlayStyle(
-    SystemUiOverlayStyle.light.copyWith(
-      systemNavigationBarColor: Colors.transparent,
-    ),
+    ScribiumSystemUiOverlayStyle.light,
   );
 
   runApp(const MyApp());
@@ -50,7 +47,7 @@ class MyApp extends StatelessWidget {
           textTheme: const TextTheme(
             titleLarge: TextStyle(
               color: ScribiumColors.darkPurple,
-              fontFamily: "Yeseva",
+              fontFamily: "Yeseva One",
             ),
             titleMedium: TextStyle(
               color: ScribiumColors.darkPurple,
