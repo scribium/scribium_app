@@ -75,7 +75,7 @@ class _LoginInputsState extends State<LoginInputs> {
     _mailInput.dispose();
     _passwordInput.dispose();
   }
-
+  
   @override
   Widget build(BuildContext context) {
     Auth provider = context.read<Auth>();
