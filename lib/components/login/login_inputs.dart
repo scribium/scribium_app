@@ -18,7 +18,7 @@ class LoginInputs extends StatefulWidget {
 }
 
 class _LoginInputsState extends State<LoginInputs> {
-  
+
   // Controller storing information from the mail and password inputs.
   late TextEditingController _mailInput;
   late TextEditingController _passwordInput;
@@ -274,10 +274,9 @@ class _LoginInputsState extends State<LoginInputs> {
                         milliseconds: 2000,
                       ),
                       onEnd: () {
-                        Navigator.of(context).push(_createRoute());
+                        Navigator.of(context).pushReplacementNamed(MainPanelScreen.routeName);
                       },
                       curve: Curves.easeInOutBack,
-                      
                       //TODO: detect the device scale to fill screen
                       scale: _logged ? 25 : 1,
                       child: AnimatedContainer(
