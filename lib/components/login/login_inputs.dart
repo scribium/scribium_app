@@ -18,7 +18,6 @@ class LoginInputs extends StatefulWidget {
 }
 
 class _LoginInputsState extends State<LoginInputs> {
-  
   // Controller storing information from the mail and password inputs.
   late TextEditingController _mailInput;
   late TextEditingController _passwordInput;
@@ -84,7 +83,6 @@ class _LoginInputsState extends State<LoginInputs> {
       Future.delayed(const Duration(milliseconds: 1000), () {
         SystemChrome.setSystemUIOverlayStyle(
           ScribiumSystemUiOverlayStyle.light.copyWith(
-
             // At the end of animation change the system navigation color, so the background matches it.
             systemNavigationBarColor: ScribiumColors.darkPurple,
             systemNavigationBarIconBrightness: Brightness.light,
@@ -274,10 +272,10 @@ class _LoginInputsState extends State<LoginInputs> {
                         milliseconds: 2000,
                       ),
                       onEnd: () {
-                        Navigator.of(context).push(_createRoute());
+                        Navigator.of(context).pushReplacementNamed(MainPanelScreen.routeName);
                       },
                       curve: Curves.easeInOutBack,
-                      
+
                       //TODO: detect the device scale to fill screen
                       scale: _logged ? 25 : 1,
                       child: AnimatedContainer(
@@ -304,29 +302,6 @@ class _LoginInputsState extends State<LoginInputs> {
           ),
         ],
       ),
-    );
-  }
-
-  Route _createRoute() {
-    // TODO: Check if user has already an account
-    // TODO: Skip login if the user is logged
-    return PageRouteBuilder(
-      transitionDuration: const Duration(milliseconds: 1500),
-      pageBuilder: (context, animation, secondaryAnimation) =>
-          const MainPanelScreen(),
-      transitionsBuilder: (context, animation, secondaryAnimation, child) {
-        const begin = 0.0;
-        const end = 1.0;
-        const curve = Curves.easeOutQuart;
-
-        var tween =
-            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-
-        return FadeTransition(
-          opacity: animation.drive(tween),
-          child: child,
-        );
-      },
     );
   }
 }
