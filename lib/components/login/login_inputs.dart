@@ -84,7 +84,7 @@ class _LoginInputsState extends State<LoginInputs> {
       Future.delayed(const Duration(milliseconds: 1000), () {
         SystemChrome.setSystemUIOverlayStyle(
           ScribiumSystemUiOverlayStyle.light.copyWith(
-
+          
             // At the end of animation change the system navigation color, so the background matches it.
             systemNavigationBarColor: ScribiumColors.darkPurple,
             systemNavigationBarIconBrightness: Brightness.light,
@@ -277,6 +277,7 @@ class _LoginInputsState extends State<LoginInputs> {
                         Navigator.of(context).pushReplacementNamed(MainPanelScreen.routeName);
                       },
                       curve: Curves.easeInOutBack,
+
                       //TODO: detect the device scale to fill screen
                       scale: _logged ? 25 : 1,
                       child: AnimatedContainer(
