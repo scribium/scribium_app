@@ -5,6 +5,7 @@ import 'package:scribium_app/constants.dart';
 import 'package:scribium_app/providers/auth.dart';
 import 'package:scribium_app/screens/intro_screen.dart';
 import 'package:scribium_app/screens/login_screen.dart';
+import 'package:scribium_app/screens/main_panel_screen.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -73,6 +74,7 @@ class MyApp extends StatelessWidget {
           ),
           iconTheme: const IconThemeData(
             color: ScribiumColors.darkPurple,
+            size: 30,
           ),
           textSelectionTheme: const TextSelectionThemeData(
             cursorColor: ScribiumColors.darkPurple,
@@ -91,6 +93,12 @@ class MyApp extends StatelessWidget {
                 color: ScribiumColors.darkPurple,
               ),
             ),
+          ),
+          shadowColor: Colors.black.withOpacity(0.1),
+          scaffoldBackgroundColor: Colors.white,
+          bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+            backgroundColor: Colors.white,
+            selectedItemColor: ScribiumColors.darkPurple,
           ),
         ),
         darkTheme: ThemeData(
@@ -114,6 +122,7 @@ class MyApp extends StatelessWidget {
         routes: {
           IntroScreen.routeName: (context) => const IntroScreen(),
           LoginScreen.routeName: (context) => const LoginScreen(),
+          MainPanelScreen.routeName: (context) => const MainPanelScreen(),
         },
       ),
     );
