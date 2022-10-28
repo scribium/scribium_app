@@ -1,11 +1,32 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:scribium_app/components/main/app_bar.dart';
 import 'package:scribium_app/constants.dart';
 
-class MainPanelScreen extends StatelessWidget {
+import '../components/empty_box.dart';
+import '../components/main/assignments_list.dart';
+import '../components/main/main_grid_panel.dart';
+
+class MainPanelScreen extends StatefulWidget {
+  static const routeName = "/main";
   const MainPanelScreen({super.key});
+
+  @override
+  State<MainPanelScreen> createState() => _MainPanelScreenState();
+}
+
+class _MainPanelScreenState extends State<MainPanelScreen> {
+  final ScrollController _scrollController = ScrollController();
+
+  ScrollController getScrollController() {
+    return _scrollController;
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _scrollController.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -16,11 +37,18 @@ class MainPanelScreen extends StatelessWidget {
     );
 
     return Scaffold(
-      backgroundColor: Colors.white,
       resizeToAvoidBottomInset: false,
+      extendBodyBehindAppBar: true,
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(
+          (mQD.size.height - mQD.padding.vertical) * 0.25,
+        ),
+        child: MainAppBar(
+          getScrollController: getScrollController,
+          mQD: mQD,
+        ),
+      ),
       bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Colors.white,
-        selectedItemColor: ScribiumColors.darkPurple,
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.dashboard),
@@ -32,68 +60,38 @@ class MainPanelScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: Column(
-        children: [
-          Container(
-            height: (mQD.size.height - mQD.padding.vertical) * 0.25,
-            width: double.infinity,
-            decoration: BoxDecoration(
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.05),
-                  blurRadius: 15,
-                  spreadRadius: 5,
-                ),
-              ],
-              borderRadius: const BorderRadius.only(
-                bottomLeft: Radius.circular(
-                  50,
-                ),
-                bottomRight: Radius.circular(50),
-              ),
-              color: ScribiumColors.lightPurple,
-              gradient: const LinearGradient(
-                colors: [
-                  ScribiumColors.lightPurple,
-                  Color.fromARGB(255, 170, 157, 186),
-                  Color.fromARGB(255, 159, 136, 188),
-                ],
+      body: SingleChildScrollView(
+        controller: _scrollController,
+        child: Column(
+          children: [
+            EmptyBox(
+              mQD: mQD,
+              height: 0.275,
+            ),
+            Container(
+              margin: const EdgeInsets.symmetric(horizontal: 20),
+              width: double.infinity,
+              height: (mQD.size.height - mQD.padding.vertical) * 0.04,
+              child: Text(
+                "Last emails",
+                style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                      fontSize: 25,
+                    ),
+                textAlign: TextAlign.left,
               ),
             ),
-            child: Stack(
-              alignment: Alignment.center,
-              children: [
-                ClipRRect(
-                  borderRadius: const BorderRadius.only(
-                    bottomLeft: Radius.circular(
-                      50,
-                    ),
-                    bottomRight: Radius.circular(50),
-                  ),
-                  child: ClipRect(
-                    child: BackdropFilter(
-                      filter: ImageFilter.blur(
-                        sigmaX: 50,
-                        sigmaY: 50,
-                      ),
-                      child: Container(
-                        color: Colors.white.withOpacity(0.5),
-                      ),
-                    ),
-                  ),
-                ),
-                Text(
-                  "Hi, Łukasz!",
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.titleSmall!.copyWith(
-                        fontSize: 40,
-                        color: ScribiumColors.darkPurple,
-                      ),
-                ),
-              ],
+            SizedBox(
+              height: (mQD.size.height - mQD.padding.vertical) * 0.15,
+              child: const AssignmentsList(),
             ),
-          ),
-        ],
+            SizedBox(
+              height: (mQD.size.height - mQD.padding.vertical) * 1,
+              child: MainGridPanel(
+                mQD: mQD,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
