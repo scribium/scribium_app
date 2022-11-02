@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:scribium_app/constants.dart';
+import 'package:scribium_app/utilities/constants.dart';
 import 'package:scribium_app/providers/auth.dart';
 import 'package:scribium_app/screens/main_panel_screen.dart';
 
@@ -18,7 +18,6 @@ class LoginInputs extends StatefulWidget {
 }
 
 class _LoginInputsState extends State<LoginInputs> {
-
   // Controller storing information from the mail and password inputs.
   late TextEditingController _mailInput;
   late TextEditingController _passwordInput;
@@ -46,11 +45,12 @@ class _LoginInputsState extends State<LoginInputs> {
 
   // Property used for now, as I don't have a possibility to check if user can, or can't be logged in.
   // TODO: Delete in a future.
+
   bool _logged = false;
 
   set logged(bool value) {
     setState(() {
-      _logged = true;
+      _logged = value;
     });
   }
 
@@ -84,7 +84,6 @@ class _LoginInputsState extends State<LoginInputs> {
       Future.delayed(const Duration(milliseconds: 1000), () {
         SystemChrome.setSystemUIOverlayStyle(
           ScribiumSystemUiOverlayStyle.light.copyWith(
-          
             // At the end of animation change the system navigation color, so the background matches it.
             systemNavigationBarColor: ScribiumColors.darkPurple,
             systemNavigationBarIconBrightness: Brightness.light,
@@ -205,10 +204,17 @@ class _LoginInputsState extends State<LoginInputs> {
                     errorMessage = "";
                     dimmed = true;
 
-                    await provider.loginUser("Email", "Password").then(
-                          (value) => setState(
+                    await provider.loginUser(_mailInput.text, _passwordInput.text).then(
+                          (AuthStatus value) => setState(
                             () {
-                              logged = true;
+                              if (value == AuthStatus.logged) {
+                                _logged = true;
+                              } else {
+                                _logged = false;
+                                _errorMessage =
+                                    "Couldn't login into this account";
+                                dimmed = false;
+                              }
                             },
                           ),
                         );
@@ -274,7 +280,11 @@ class _LoginInputsState extends State<LoginInputs> {
                         milliseconds: 2000,
                       ),
                       onEnd: () {
-                        Navigator.of(context).pushReplacementNamed(MainPanelScreen.routeName);
+                        print(_logged);
+                        if (_logged) {
+                          Navigator.of(context)
+                              .pushReplacementNamed(MainPanelScreen.routeName);
+                        }
                       },
                       curve: Curves.easeInOutBack,
 
@@ -304,29 +314,6 @@ class _LoginInputsState extends State<LoginInputs> {
           ),
         ],
       ),
-    );
-  }
-
-  Route _createRoute() {
-    // TODO: Check if user has already an account
-    // TODO: Skip login if the user is logged
-    return PageRouteBuilder(
-      transitionDuration: const Duration(milliseconds: 1500),
-      pageBuilder: (context, animation, secondaryAnimation) =>
-          const MainPanelScreen(),
-      transitionsBuilder: (context, animation, secondaryAnimation, child) {
-        const begin = 0.0;
-        const end = 1.0;
-        const curve = Curves.easeOutQuart;
-
-        var tween =
-            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-
-        return FadeTransition(
-          opacity: animation.drive(tween),
-          child: child,
-        );
-      },
     );
   }
 }
