@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:scribium_app/components/main/app_bar.dart';
-import 'package:scribium_app/constants.dart';
+import 'package:scribium_app/utilities/constants.dart';
 
 import '../components/empty_box.dart';
 import '../components/main/assignments_list.dart';
@@ -71,11 +71,13 @@ class _MainPanelScreenState extends State<MainPanelScreen> {
             Container(
               margin: const EdgeInsets.symmetric(horizontal: 20),
               width: double.infinity,
-              height: (mQD.size.height - mQD.padding.vertical) * 0.04,
+              height: (mQD.size.height - mQD.padding.vertical) * 0.0325,
               child: Text(
-                "Last emails",
-                style: Theme.of(context).textTheme.titleSmall!.copyWith(
-                      fontSize: 25,
+                "Assignments",
+                style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w100,
+                      fontFamily: "Archivo",
                     ),
                 textAlign: TextAlign.left,
               ),
