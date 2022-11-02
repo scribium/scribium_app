@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:scribium_app/components/card.dart' as s;
-import 'package:scribium_app/constants.dart';
+import 'package:scribium_app/utilities/constants.dart';
 
 class AssignmentsList extends StatelessWidget {
   const AssignmentsList({super.key});

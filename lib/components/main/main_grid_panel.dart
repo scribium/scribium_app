@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:scribium_app/constants.dart';
+import 'package:scribium_app/utilities/constants.dart';
 
 class MainGridPanel extends StatelessWidget {
   final MediaQueryData mQD;
@@ -8,7 +8,7 @@ class MainGridPanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: double.infinity,
       child: StaggeredGrid.count(
         crossAxisCount: 2,
