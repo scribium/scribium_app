@@ -1,8 +1,12 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:scribium_app/extensions/string_extension.dart';
+import 'package:scribium_app/models/user.dart';
+import 'package:scribium_app/providers/auth.dart';
 
-import '../../constants.dart';
+import '../../utilities/constants.dart';
 
 class MainAppBar extends StatefulWidget {
   final MediaQueryData mQD;
@@ -36,11 +40,17 @@ class _MainAppBarState extends State<MainAppBar> {
 
   @override
   Widget build(BuildContext context) {
+    scrollToTheTop() {
+      widget.getScrollController().animateTo(
+            0.0,
+            duration: const Duration(milliseconds: 250),
+            curve: Curves.easeOutQuart,
+          );
+    }
+
     return GestureDetector(
       onTap: () {
-        widget.getScrollController().animateTo(0.0,
-            duration: const Duration(milliseconds: 250),
-            curve: Curves.easeOutQuart);
+        scrollToTheTop();
       },
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 1000),
@@ -98,46 +108,50 @@ class _MainAppBarState extends State<MainAppBar> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     //mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      AnimatedContainer(
-                        duration: const Duration(milliseconds: 250),
-                        padding: const EdgeInsets.only(left: 30),
-                        curve: Curves.easeOutQuart,
-                        width: (widget.mQD.size.width -
-                                widget.mQD.padding.horizontal) *
-                            0.75,
-                        alignment: Alignment.center,
-                        child: Material(
-                          color: Colors.transparent,
-                          child: InkWell(
-                            customBorder: const CircleBorder(),
-                            onTap: () {},
-                            child: AnimatedSwitcher(
-                              duration: const Duration(milliseconds: 1000),
-                              switchInCurve: Curves.easeOutQuart,
-                              switchOutCurve: Curves.easeOutQuart,
-                              transitionBuilder: (child, animation) {
-                                return RotationTransition(
-                                  turns: animation,
-                                  child: ScaleTransition(
-                                    scale: animation,
-                                    child: child,
-                                  ),
-                                );
-                              },
-                              child: showAppBar
-                                  ? Icon(
-                                      Icons.account_circle_rounded,
-                                      key: UniqueKey(),
-                                    )
-                                  : Icon(
-                                      Icons.expand_more_rounded,
-                                      key: UniqueKey(),
+                      Expanded(
+                        child: AnimatedContainer(
+                          duration: const Duration(milliseconds: 250),
+                          padding: const EdgeInsets.only(left: 30),
+                          curve: Curves.easeOutQuart,
+                          alignment: Alignment.center,
+                          child: Material(
+                            color: Colors.transparent,
+                            child: InkWell(
+                              customBorder: const CircleBorder(),
+                              onTap: () {},
+                              child: AnimatedSwitcher(
+                                duration: const Duration(milliseconds: 1000),
+                                switchInCurve: Curves.easeOutQuart,
+                                switchOutCurve: Curves.easeOutQuart,
+                                transitionBuilder: (child, animation) {
+                                  return RotationTransition(
+                                    turns: animation,
+                                    child: ScaleTransition(
+                                      scale: animation,
+                                      child: child,
                                     ),
-                              // child: Icon(
-                              //   showAppBar
-                              //       ? Icons.account_circle_rounded
-                              //       : Icons.expand_circle_down,
-                              //),
+                                  );
+                                },
+                                child: showAppBar
+                                    ? Icon(
+                                        Icons.account_circle_rounded,
+                                        key: UniqueKey(),
+                                      )
+                                    : GestureDetector(
+                                        child: Icon(
+                                          Icons.expand_more_rounded,
+                                          key: UniqueKey(),
+                                        ),
+                                        onTap: () {
+                                          scrollToTheTop();
+                                        },
+                                      ),
+                                // child: Icon(
+                                //   showAppBar
+                                //       ? Icons.account_circle_rounded
+                                //       : Icons.expand_circle_down,
+                                //),
+                              ),
                             ),
                           ),
                         ),
@@ -174,8 +188,10 @@ class _MainAppBarState extends State<MainAppBar> {
                                   fontSize: 0.1,
                                   color: ScribiumColors.darkPurple,
                                 ),
-                        child: const Text(
-                          "Hello, Łukasz!",
+                        child: Consumer<Auth>(
+                          builder: (context, value, child) => Text(
+                            "Hello, ${value.user!.name}!",
+                          ),
                         ),
                       ),
                       AnimatedDefaultTextStyle(
@@ -191,9 +207,13 @@ class _MainAppBarState extends State<MainAppBar> {
                                   fontSize: 0.1,
                                   color: ScribiumColors.darkPurple,
                                 ),
-                        child: const Text(
-                          "Student account",
-                        ),
+                        child: Consumer<Auth>(builder: (context, value, child) {
+                          return Text(
+                            "${value.user!.role[0].name}'s account"
+                                .toCapitalized(),
+                          );
+                          return SizedBox();
+                        }),
                       ),
                     ],
                   ),
