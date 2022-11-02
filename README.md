@@ -1,16 +1,21 @@
-# scribium_app
+# Scribium App
+A future advanced gradebook mobile application, connected with a custom backend written by a passionated mobile developer. 
 
-A new Flutter project.
+Scribium app is a flutter project creating in a free time, to learn and expand knowledge about security, backends, and network connections.
 
-## Getting Started
+This app will probably never be used in production. **It is made just for fun**.
 
-This project is a starting point for a Flutter application.
+## What are the goals of this application?
+At the end, I would like to have a responsize application with a stable connection to the backend, which **could** be used by schools to save grades in a safe way.
 
-A few resources to get you started if this is your first Flutter project:
+ - [x] Create an intro screen
+ - [x] Create a login screen
+	 - [x] Login system
+ - [x] Make a connection with a backend
+	 - [x] Save information in the user model
+ - [ ] Allow user to view some details about the account
+ - [ ] Downloading grades from the backend
+ - [ ] Downloading information about the school from the backend
+ - [ ] Give possbility to change password in a safe way
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+**This list may be expanded, because for now I don't have a fixed plan.** ~~Just trying to copy some different gradebook application on google playstore~~
