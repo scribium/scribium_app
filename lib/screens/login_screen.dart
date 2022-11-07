@@ -9,7 +9,7 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final MediaQueryData mQD = MediaQuery.of(context);
-    
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: SafeArea(
@@ -30,7 +30,7 @@ class LoginScreen extends StatelessWidget {
 
               Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SizedBox(
                     height: (mQD.size.height - mQD.padding.vertical) * 0.05,
@@ -53,7 +53,7 @@ class LoginScreen extends StatelessWidget {
                     mQD: mQD,
                     size: Size(
                       double.infinity,
-                      (mQD.size.height - mQD.padding.vertical) * 0.4,
+                      (mQD.size.height - mQD.padding.vertical) * 0.6,
                     ),
                   ), //TODO: Set height and width using property
                 ],

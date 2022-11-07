@@ -92,227 +92,238 @@ class _LoginInputsState extends State<LoginInputs> {
       });
     }
 
-    return SizedBox(
-      height: widget.size.height,
-      width: widget.size.width,
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          Column(
-            children: [
-              SizedBox(
-                height: (widget.mQD.size.height - widget.mQD.padding.vertical) *
-                    0.05,
-                width: (widget.mQD.size.width - widget.mQD.padding.horizontal) *
-                    0.8,
-                child: FittedBox(
-                  child: Text(
-                    "Login",
-                    textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                          fontSize: 40,
-                        ),
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: (widget.mQD.size.height - widget.mQD.padding.vertical) *
-                    0.05,
-              ),
-              SizedBox(
-                width: (widget.mQD.size.width - widget.mQD.padding.horizontal) *
-                    0.7,
-                height: (widget.mQD.size.height - widget.mQD.padding.vertical) *
-                    0.075,
-                child: TextField(
-                  controller: _mailInput,
-                  textAlign: TextAlign.start,
-                  textInputAction: TextInputAction.done,
-                  scrollPhysics: const BouncingScrollPhysics(),
-                  scrollPadding: EdgeInsets.zero,
-                  decoration: const InputDecoration(
-                    hintText: "Email",
-                    prefixIcon: Icon(Icons.account_circle_rounded),
-                  ),
-                ),
-              ),
-              SizedBox(
-                width: (widget.mQD.size.width - widget.mQD.padding.horizontal) *
-                    0.7,
-                height: (widget.mQD.size.height - widget.mQD.padding.vertical) *
-                    0.075,
-                child: TextField(
-                  controller: _passwordInput,
-                  textAlign: TextAlign.start,
-                  textInputAction: TextInputAction.done,
-                  scrollPhysics: const BouncingScrollPhysics(),
-                  obscureText: !_passwordVisible,
-                  scrollPadding: EdgeInsets.zero,
-                  decoration: InputDecoration(
-                    hintText: "Password",
-                    prefixIcon: const Icon(Icons.password_rounded),
-                    suffixIcon: IconButton(
-                      icon: Icon(
-                        _passwordVisible
-                            ? Icons.visibility
-                            : Icons.visibility_off,
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          _passwordVisible = !_passwordVisible;
-                        });
-                      },
-                    ),
-                  ),
-                ),
-              ),
+    double indicatorMaxDimensions =
+        widget.mQD.size.height > widget.mQD.size.width
+            ? widget.mQD.size.height
+            : widget.mQD.size.width;
 
-              // height: 0.05 (0.60)
-              SizedBox(
-                height: (widget.mQD.size.height - widget.mQD.padding.vertical) *
-                    0.05,
-              ),
-
-              // height: 0.05 (0.65)
-              SizedBox(
-                height: (widget.mQD.size.height - widget.mQD.padding.vertical) *
-                    0.05,
-                width: (widget.mQD.size.width - widget.mQD.padding.horizontal) *
-                    0.7,
-                child: OutlinedButton(
-                  onPressed: () async {
-                    if (_dimmed) {
-                      return;
-                    }
-
-                    if (provider.isLogged()) {
-                      //TODO: Move to the main screen
-                      return;
-                    }
-
-                    // Data checker...
-                    if (_mailInput.text.isEmpty ||
-                        _passwordInput.text.isEmpty) {
-                      errorMessage = "Email and password cannot be empty.";
-                      return;
-                    }
-                    if (!_mailInput.text.contains("@")) {
-                      errorMessage = "The provided email doesn't exists.";
-                      return;
-                    }
-
-                    errorMessage = "";
-                    dimmed = true;
-
-                    await provider.loginUser(_mailInput.text, _passwordInput.text).then(
-                          (AuthStatus value) => setState(
-                            () {
-                              if (value == AuthStatus.logged) {
-                                _logged = true;
-                              } else {
-                                _logged = false;
-                                _errorMessage =
-                                    "Couldn't login into this account";
-                                dimmed = false;
-                              }
-                            },
-                          ),
-                        );
-                  },
-                  child: const Text(
-                    "Login",
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: (widget.mQD.size.height - widget.mQD.padding.vertical) *
-                    0.05,
-                width: (widget.mQD.size.width - widget.mQD.padding.horizontal) *
-                    0.7,
-                child: Center(
-                  child: Text(
-                    _errorMessage,
-                    textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.titleSmall!.copyWith(
-                          color: Colors.red,
-                        ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-          IgnorePointer(
-            ignoring: (!_dimmed && _begin == 5.0),
-            child: Stack(
-              alignment: Alignment.center,
+    return Center(
+      child: SizedBox(
+        height: widget.size.height,
+        width: widget.size.width,
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            Column(
               children: [
                 Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 20),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  child: ClipRect(
-                    child: TweenAnimationBuilder<double>(
-                      tween: Tween<double>(begin: _begin, end: _end),
-                      duration: const Duration(milliseconds: 500),
-                      curve: Curves.easeIn,
-                      builder: (_, value, __) {
-                        return BackdropFilter(
-                          filter: ImageFilter.blur(
-                            sigmaX: value,
-                            sigmaY: value,
+                  margin: const EdgeInsets.symmetric(horizontal: 40),
+                  width: 300,
+                  height: 25,
+                  child: FittedBox(
+                    child: Text(
+                      "Login",
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                            fontSize: 40,
                           ),
-                          child: Container(
-                            color: Colors.transparent,
-                          ),
-                        );
-                      },
                     ),
                   ),
                 ),
-                AnimatedOpacity(
-                  duration: const Duration(milliseconds: 500),
-                  curve: Curves.easeOutQuart,
-                  opacity: _dimmed ? 1 : 0,
-                  child: Center(
-                    child: AnimatedScale(
-                      duration: const Duration(
-                        milliseconds: 2000,
+                SizedBox(
+                  height:
+                      (widget.mQD.size.height - widget.mQD.padding.vertical) *
+                          0.05,
+                ),
+                Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 40),
+                  width: 300,
+                  height: 50,
+                  child: TextField(
+                    controller: _mailInput,
+                    textAlign: TextAlign.start,
+                    textInputAction: TextInputAction.done,
+                    scrollPhysics: const BouncingScrollPhysics(),
+                    scrollPadding: EdgeInsets.zero,
+                    decoration: const InputDecoration(
+                      hintText: "Email",
+                      prefixIcon: Icon(Icons.account_circle_rounded),
+                    ),
+                  ),
+                ),
+                Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 40),
+                  width: 300,
+                  height: 50,
+                  child: TextField(
+                    controller: _passwordInput,
+                    textAlign: TextAlign.start,
+                    textInputAction: TextInputAction.done,
+                    scrollPhysics: const BouncingScrollPhysics(),
+                    obscureText: !_passwordVisible,
+                    scrollPadding: EdgeInsets.zero,
+                    decoration: InputDecoration(
+                      hintText: "Password",
+                      prefixIcon: const Icon(Icons.password_rounded),
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          _passwordVisible
+                              ? Icons.visibility
+                              : Icons.visibility_off,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _passwordVisible = !_passwordVisible;
+                          });
+                        },
                       ),
-                      onEnd: () {
-                        print(_logged);
-                        if (_logged) {
-                          Navigator.of(context)
-                              .pushReplacementNamed(MainPanelScreen.routeName);
-                        }
-                      },
-                      curve: Curves.easeInOutBack,
+                    ),
+                  ),
+                ),
 
-                      //TODO: detect the device scale to fill screen
-                      scale: _logged ? 25 : 1,
-                      child: AnimatedContainer(
-                        duration: const Duration(
-                          milliseconds: 250,
-                        ),
-                        curve: Curves.easeOutQuart,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: _logged
-                              ? ScribiumColors.darkPurple
-                              : Colors.transparent,
-                        ),
-                        child: const CircularProgressIndicator(
-                          strokeWidth: 1.5,
-                          color: ScribiumColors.darkPurple,
-                        ),
+                // height: 0.05 (0.60)
+                SizedBox(
+                  height:
+                      (widget.mQD.size.height - widget.mQD.padding.vertical) *
+                          0.05,
+                ),
+
+                // height: 0.05 (0.65)
+                Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 40),
+                  height: 30,
+                  width: 300,
+                  child: AspectRatio(
+                    aspectRatio: 3 / 2,
+                    child: OutlinedButton(
+                      onPressed: () async {
+                        if (_dimmed) {
+                          return;
+                        }
+
+                        if (provider.isLogged()) {
+                          //TODO: Move to the main screen
+                          return;
+                        }
+
+                        // Data checker...
+                        if (_mailInput.text.isEmpty ||
+                            _passwordInput.text.isEmpty) {
+                          errorMessage = "Email and password cannot be empty.";
+                          return;
+                        }
+                        if (!_mailInput.text.contains("@")) {
+                          errorMessage = "The provided email doesn't exists.";
+                          return;
+                        }
+
+                        errorMessage = "";
+                        dimmed = true;
+
+                        await provider
+                            .loginUser(_mailInput.text, _passwordInput.text)
+                            .then(
+                              (AuthStatus value) => setState(
+                                () {
+                                  if (value == AuthStatus.logged) {
+                                    _logged = true;
+                                  } else {
+                                    _logged = false;
+                                    _errorMessage =
+                                        "Couldn't login into this account";
+                                    dimmed = false;
+                                  }
+                                },
+                              ),
+                            );
+                      },
+                      child: const Text(
+                        "Login",
                       ),
+                    ),
+                  ),
+                ),
+                Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 40),
+                  width: 300,
+                  height: 25,
+                  child: Center(
+                    child: Text(
+                      _errorMessage,
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                            color: Colors.red,
+                          ),
                     ),
                   ),
                 ),
               ],
             ),
-          ),
-        ],
+            IgnorePointer(
+              ignoring: (!_dimmed && _begin == 5.0),
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 20),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    child: ClipRect(
+                      child: TweenAnimationBuilder<double>(
+                        tween: Tween<double>(begin: _begin, end: _end),
+                        duration: const Duration(milliseconds: 500),
+                        curve: Curves.easeIn,
+                        builder: (_, value, __) {
+                          return BackdropFilter(
+                            filter: ImageFilter.blur(
+                              sigmaX: value,
+                              sigmaY: value,
+                            ),
+                            child: Container(
+                              color: Colors.transparent,
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+                  AnimatedOpacity(
+                    duration: const Duration(milliseconds: 500),
+                    curve: Curves.easeOutQuart,
+                    opacity: _dimmed ? 1 : 0,
+                    child: Center(
+                      child: AnimatedScale(
+                        duration: const Duration(
+                          milliseconds: 2000,
+                        ),
+                        onEnd: () {
+                          print(_logged);
+                          if (_logged) {
+                            Navigator.of(context).pushReplacementNamed(
+                                MainPanelScreen.routeName);
+                          }
+                        },
+                        curve: Curves.easeInOutBack,
+
+                        //TODO: detect the device scale to fill screen
+                        scale: _logged
+                            ? ((indicatorMaxDimensions / 36) + 7.5)
+                            : 1,
+                        child: AnimatedContainer(
+                          duration: const Duration(
+                            milliseconds: 250,
+                          ),
+                          curve: Curves.easeOutQuart,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: _logged
+                                ? ScribiumColors.darkPurple
+                                : Colors.transparent,
+                          ),
+                          child: const CircularProgressIndicator(
+                            strokeWidth: 1.5,
+                            color: ScribiumColors.darkPurple,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
