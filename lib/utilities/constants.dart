@@ -5,6 +5,9 @@ import 'package:scribium_app/helpers/custom_route.dart';
 class Constants {
   static const appName = "Scribium";
   static const debugMode = true;
+
+  static const localBackendAddress = "http://10.0.2.2:3000";
+  static const externalBackendAddress = "http://10.0.2.2:3000"; //TODO: Change external backend address
 }
 
 class ScribiumThemes {
