@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:scribium_app/models/user.dart';
 import 'package:http/http.dart' as http;
+import 'package:scribium_app/utilities/constants.dart';
 
 class Auth with ChangeNotifier {
   User? _user;
@@ -11,70 +12,82 @@ class Auth with ChangeNotifier {
 
   Future<AuthStatus> loginUser(String email, String password) async {
     //TODO: Add user login sequence function
-    //HACK: Leave 1500 miliseconds delay, in case if someone started spamming requests.
+
     // Map loginData = {
     //   'email': 'donald.kostecki@hotmail.com',
     //   'password': 'pass123'
     // };
 
-    Map loginData = {
-      'email': email,
-      'password': password,
-    };
+    const String url = Constants.debugMode
+        ? Constants.localBackendAddress
+        : Constants.externalBackendAddress;
 
-    String encodedData = json.encode(loginData);
+    //HACK: Leave 1500 miliseconds delay, in case if someone started spamming requests.
+    return Future.delayed(const Duration(milliseconds: 1500), () async {
+      Map loginData = {
+        'email': email,
+        'password': password,
+      };
 
-    // Receiving JWT token
+      String encodedData = json.encode(loginData);
 
-    http.Response jwtResponse = await http.post(
-      Uri.parse('http://10.0.2.2:3000/auth/login'),
-      body: encodedData,
-      headers: {"Content-Type": "application/json"},
-      encoding: Encoding.getByName("utf-8"),
-    );
+      // Receiving JWT token
 
-    if (jwtResponse.statusCode == 200) {
-      Map<String, dynamic> decodedBody = json.decode(jwtResponse.body);
+      http.Response? jwtResponse = await http
+          .post(
+            Uri.parse('$url/auth/login'),
+            body: encodedData,
+            headers: {"Content-Type": "application/json"},
+            encoding: Encoding.getByName("utf-8"),
+          )
+          .timeout(const Duration(milliseconds: 2000))
+          .onError((error, stackTrace) => http.Response("", 400));
 
-      // Getting user information
+      if (jwtResponse.statusCode == 200) {
+        Map<String, dynamic> decodedBody = json.decode(jwtResponse.body);
 
-      http.Response response = await http.get(
-        Uri.parse('http://10.0.2.2:3000/me'),
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": "Bearer " + decodedBody["token"],
-        },
-      );
+        // Getting user information
 
-      Map<String, dynamic> userData = json.decode(response.body);
-      print(userData);
+        http.Response response = await http.get(
+          Uri.parse('$url/me'),
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer ${decodedBody["token"]}",
+          },
+        );
 
-      List<UserRole> roles = [];
-      for (String role in userData["roles"]) {
-        for (UserRole e in UserRole.values) {
-          {
-            if (role.toLowerCase() == e.name.toLowerCase()) {
-              roles.add(UserRole.values.byName(e.name));
+        Map<String, dynamic> userData = json.decode(response.body);
+        print(userData);
+
+        List<UserRole> roles = [];
+        for (String role in userData["roles"]) {
+          for (UserRole e in UserRole.values) {
+            {
+              if (role.toLowerCase() == e.name.toLowerCase()) {
+                roles.add(UserRole.values.byName(e.name));
+              }
             }
           }
         }
+
+        _user = User(
+          decodedBody["token"]!,
+          details: UserDetails(
+            name: userData["details"]["firstName"] ?? "",
+            lastName: userData["details"]["lastName"] ?? "",
+            email: userData["email"],
+            address: userData["details"]["address"],
+            phone: int.parse(userData["details"]["phone"]),
+          ),
+          role: roles,
+        );
+
+        return AuthStatus.logged;
       }
 
-      _user = User(
-        decodedBody["token"]!,
-        name: userData["details"]["firstName"] ?? "",
-        lastName: userData["details"]["lastName"] ?? "",
-        email: userData["email"],
-        role: roles,
-        address: userData["details"]["address"],
-        phone: int.parse(userData["details"]["phone"]),
-      );
-
-      return AuthStatus.logged;
-    }
-
-    return AuthStatus.error;
-  }
+      return AuthStatus.error;
+    });
+   }
 
   bool isLogged() {
     return _user != null;
