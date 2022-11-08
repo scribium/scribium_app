@@ -3,7 +3,6 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:scribium_app/extensions/string_extension.dart';
-import 'package:scribium_app/models/user.dart';
 import 'package:scribium_app/providers/auth.dart';
 
 import '../../utilities/constants.dart';
@@ -55,10 +54,8 @@ class _MainAppBarState extends State<MainAppBar> {
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 1000),
         curve: Curves.easeOutQuart,
-        height: showAppBar
-            ? (widget.mQD.size.height - widget.mQD.padding.vertical) * 0.25
-            : (widget.mQD.size.height - widget.mQD.padding.vertical) * 0.125,
-        width: double.infinity,
+        height: showAppBar ? 150 : 80,
+        width: (widget.mQD.size.height - widget.mQD.padding.vertical) * 1,
         decoration: BoxDecoration(
           color: Colors.transparent,
           boxShadow: [
@@ -72,7 +69,9 @@ class _MainAppBarState extends State<MainAppBar> {
             bottomLeft: Radius.circular(
               50,
             ),
-            bottomRight: Radius.circular(50),
+            bottomRight: Radius.circular(
+              50,
+            ),
           ),
         ),
         child: Stack(
@@ -83,7 +82,9 @@ class _MainAppBarState extends State<MainAppBar> {
                 bottomLeft: Radius.circular(
                   50,
                 ),
-                bottomRight: Radius.circular(50),
+                bottomRight: Radius.circular(
+                  50,
+                ),
               ),
               child: ClipRect(
                 child: BackdropFilter(
@@ -175,45 +176,70 @@ class _MainAppBarState extends State<MainAppBar> {
                   duration: const Duration(milliseconds: 250),
                   child: Column(
                     children: [
-                      AnimatedDefaultTextStyle(
-                        textAlign: TextAlign.center,
-                        duration: const Duration(milliseconds: 250),
-                        curve: Curves.easeOutQuart,
-                        style: showAppBar
-                            ? Theme.of(context).textTheme.titleSmall!.copyWith(
-                                  fontSize: 40,
-                                  color: ScribiumColors.darkPurple,
-                                )
-                            : Theme.of(context).textTheme.titleSmall!.copyWith(
-                                  fontSize: 0.1,
-                                  color: ScribiumColors.darkPurple,
-                                ),
-                        child: Consumer<Auth>(
-                          builder: (context, value, child) => Text(
-                            "Hello, ${value.user!.name}!",
+                      Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 20),
+                        child: AnimatedDefaultTextStyle(
+                          textAlign: TextAlign.center,
+                          duration: const Duration(milliseconds: 250),
+                          curve: Curves.easeOutQuart,
+                          style: showAppBar
+                              ? Theme.of(context)
+                                  .textTheme
+                                  .titleSmall!
+                                  .copyWith(
+                                    fontSize: 40,
+                                    color: ScribiumColors.darkPurple,
+                                  )
+                              : Theme.of(context)
+                                  .textTheme
+                                  .titleSmall!
+                                  .copyWith(
+                                    fontSize: 1,
+                                    color: ScribiumColors.darkPurple,
+                                  ),
+                          child: Consumer<Auth>(
+                            //TODO: Fix height > 0.0': is not true. error
+                            builder: (context, value, child) => FittedBox(
+                              fit: BoxFit.scaleDown,
+                              child: Text(
+                                "Hello, ${value.user!.details.name}!",
+                              ),
+                            ),
                           ),
                         ),
                       ),
-                      AnimatedDefaultTextStyle(
-                        textAlign: TextAlign.center,
-                        duration: const Duration(milliseconds: 250),
-                        curve: Curves.easeOutQuart,
-                        style: showAppBar
-                            ? Theme.of(context).textTheme.titleSmall!.copyWith(
-                                  fontSize: 20,
-                                  color: ScribiumColors.darkPurple,
-                                )
-                            : Theme.of(context).textTheme.titleSmall!.copyWith(
-                                  fontSize: 0.1,
-                                  color: ScribiumColors.darkPurple,
-                                ),
-                        child: Consumer<Auth>(builder: (context, value, child) {
-                          return Text(
-                            "${value.user!.role[0].name}'s account"
-                                .toCapitalized(),
-                          );
-                          return SizedBox();
-                        }),
+                      Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 40),
+                        child: AnimatedDefaultTextStyle(
+                          textAlign: TextAlign.center,
+                          duration: const Duration(milliseconds: 250),
+                          curve: Curves.easeOutQuart,
+                          style: showAppBar
+                              ? Theme.of(context)
+                                  .textTheme
+                                  .titleSmall!
+                                  .copyWith(
+                                    fontSize: 20,
+                                    color: ScribiumColors.darkPurple,
+                                  )
+                              : Theme.of(context)
+                                  .textTheme
+                                  .titleSmall!
+                                  .copyWith(
+                                    fontSize: 1,
+                                    color: ScribiumColors.darkPurple,
+                                  ),
+                          child:
+                              Consumer<Auth>(builder: (context, value, child) {
+                            return FittedBox(
+                              fit: BoxFit.scaleDown,
+                              child: Text(
+                                "${value.user!.role[0].name}'s account"
+                                    .toCapitalized(),
+                              ),
+                            );
+                          }),
+                        ),
                       ),
                     ],
                   ),
