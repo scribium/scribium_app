@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -128,7 +129,9 @@ class _LoginInputsState extends State<LoginInputs> {
                 Container(
                   margin: const EdgeInsets.symmetric(horizontal: 40),
                   width: 300,
-                  height: 50,
+                  height: widget.mQD.size.height <= 360
+                      ? (widget.mQD.size.height * 0.09)
+                      : 50,
                   child: TextField(
                     controller: _mailInput,
                     textAlign: TextAlign.start,
@@ -144,7 +147,9 @@ class _LoginInputsState extends State<LoginInputs> {
                 Container(
                   margin: const EdgeInsets.symmetric(horizontal: 40),
                   width: 300,
-                  height: 50,
+                  height: widget.mQD.size.height <= 360
+                      ? (widget.mQD.size.height * 0.09)
+                      : 50,
                   child: TextField(
                     controller: _passwordInput,
                     textAlign: TextAlign.start,
@@ -181,7 +186,9 @@ class _LoginInputsState extends State<LoginInputs> {
                 // height: 0.05 (0.65)
                 Container(
                   margin: const EdgeInsets.symmetric(horizontal: 40),
-                  height: 30,
+                  height: widget.mQD.size.height <= 360
+                      ? (widget.mQD.size.height * 0.06)
+                      : 30,
                   width: 300,
                   child: AspectRatio(
                     aspectRatio: 3 / 2,
@@ -278,11 +285,12 @@ class _LoginInputsState extends State<LoginInputs> {
                       ),
                     ),
                   ),
-                  AnimatedOpacity(
-                    duration: const Duration(milliseconds: 500),
-                    curve: Curves.easeOutQuart,
-                    opacity: _dimmed ? 1 : 0,
-                    child: Center(
+                  Align(
+                    alignment: const Alignment(0, -0.5),
+                    child: AnimatedOpacity(
+                      duration: const Duration(milliseconds: 500),
+                      curve: Curves.easeOutQuart,
+                      opacity: _dimmed ? 1 : 0,
                       child: AnimatedScale(
                         duration: const Duration(
                           milliseconds: 2000,
@@ -295,12 +303,20 @@ class _LoginInputsState extends State<LoginInputs> {
                           }
                         },
                         curve: Curves.easeInOutBack,
-
-                        //TODO: detect the device scale to fill screen
                         scale: _logged
-                            ? ((indicatorMaxDimensions / 36) + 7.5)
+                            ? (sqrt(pow(
+                                            widget.mQD.size.height -
+                                                widget.mQD.padding.vertical,
+                                            2) +
+                                        pow(
+                                            widget.mQD.size.width -
+                                                widget.mQD.padding.horizontal,
+                                            2)) /
+                                    36) +
+                                1
                             : 1,
                         child: AnimatedContainer(
+                          //alignment: const Alignment(0, -0.5),
                           duration: const Duration(
                             milliseconds: 250,
                           ),
