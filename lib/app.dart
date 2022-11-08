@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:scribium_app/helpers/no_thumb_scroll_behavior.dart';
 
 import 'providers/auth.dart';
 import 'screens/intro_screen.dart';
@@ -25,6 +26,9 @@ class App extends StatelessWidget {
         // Themes set
         // TODO: Add different themes
         theme: ScribiumThemes.light,
+
+        // Scroll behavior
+        scrollBehavior: NoThumbScrollBehavior().copyWith(scrollbars: false),
 
         debugShowCheckedModeBanner: false,
         // Route management
