@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:scribium_app/components/main/app_bar.dart';
 import 'package:scribium_app/utilities/constants.dart';
 
-import '../components/empty_box.dart';
 import '../components/main/assignments_list.dart';
 import '../components/main/main_grid_panel.dart';
 
@@ -112,12 +111,8 @@ class _MainPanelScreenState extends State<MainPanelScreen> {
                             height: 100,
                             child: AssignmentsList(),
                           ),
-                          SizedBox(
-                            height:
-                                (mQD.size.height - mQD.padding.vertical) * 1,
-                            child: MainGridPanel(
-                              mQD: mQD,
-                            ),
+                          MainGridPanel(
+                            mQD: mQD,
                           ),
                         ],
                       )),
