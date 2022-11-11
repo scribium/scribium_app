@@ -24,7 +24,7 @@ class AssignmentsList extends StatelessWidget {
                   width: 75,
                   height: 75,
                   margin:
-                      const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+                      const EdgeInsets.symmetric(vertical: 20, horizontal: 7.5),
                   decoration: BoxDecoration(
                     color: Colors.white,
                     //color: ScribiumColors.darkPurple,
